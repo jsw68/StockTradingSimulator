@@ -1,0 +1,31 @@
+{% extends 'template.html'%}
+
+{% block title %}
+History
+{% endblock title %}
+
+{% block head %}
+<style>li:nth-child(odd){
+    color: blue
+}
+    li:nth-child(even){
+    color: red
+}
+</style>
+{% endblock head %}
+
+{% block body %}
+
+<h2>Your Trading History</h2>
+
+{% if stocks %}
+<div id="main-content">
+    <ul style= "list-style: none; padding-left: 0; font-size: 28px;">
+        {% for stock in stocks %}
+        <li>You bought {{stock.amount}} shares(s) of {{stock.symbol}} at ${{stock.bought_at}}. You sold it at {{stock.sold_at}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock body %}
+

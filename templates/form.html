@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="prices">
+        {% for key, value in stocks.items %}
+        <form method="POST" action="{% url 'form' %}">
+        <input type="hidden" name="symbol" value="{{key}}" />
+        <input type="hidden" name="price" value="{{value.2}}" />
+        {% csrf_token %}
+        <div class="wrapper" style="display: flex; white-space: nowrap">
+        <a href="{% url 'ticker' key %}" id="key" style="left-margin: 5rem; display: inline-block">{{key}}</a> 
+        <p style="display: inline-block">{{value.2}}</p>
+        {% if value.1 >= 0 %}
+        <p style="display: inline-block; color: lime">Change: ${{value.1}}</p>
+        {% else %}
+        <p style="display: inline-block; color: red">Change: ${{value.1}}</p>
+        {% endif %}
+        <input style="display: inline-block" type="number" name="amount" min="1">
+        <button type="submit">BUY</button>
+        </div>
+        </form>
+        {% endfor %}
+    </div>
+    <div class="links">
+        <a href="{% url "home" %}">Back Home</a>
+    </div>
+</body>
+</html>

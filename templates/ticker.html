@@ -1,0 +1,89 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+{% if ticker %}
+{{ticker}}
+{% else %}
+Error: Ticker not found
+{% endif %}
+{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'table.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+{% endblock head %}
+{% block body %}
+{% if ticker %}
+<div class="table-title">
+    <h3>{{ticker}}</h3>
+</div>
+{% comment %} <div style="width:1000;height:100">
+    {{ graph_div|safe }}
+</div> {% endcomment %}
+<div class="d-flex justify-content-center">
+    <div class="nav nav-pills me-3" id="pills-tab" role="tablist" aria-orientation="horizontal" style="display: flex; justify-content: center">
+      <button class="nav-link active" id="pills-max-tab" data-bs-toggle="pill" data-bs-target="#pills-max" type="button" role="tab" aria-controls="pills-max" aria-selected="true">Max</button>
+      <button class="nav-link" id="pills-ytd-tab" data-bs-toggle="pill" data-bs-target="#pills-ytd" type="button" role="tab" aria-controls="pills-ytd" aria-selected="false">YTD</button>
+      <button class="nav-link" id="pills-5y-tab" data-bs-toggle="pill" data-bs-target="#pills-5y" type="button" role="tab" aria-controls="pills-5y" aria-selected="false">5Y</button>
+      <button class="nav-link" id="pills-1y-tab" data-bs-toggle="pill" data-bs-target="#pills-1y" type="button" role="tab" aria-controls="pills-1y" aria-selected="false">1Y</button>
+      <button class="nav-link" id="pills-6mo-tab" data-bs-toggle="pill" data-bs-target="#pills-6mo" type="button" role="tab" aria-controls="pills-6mo" aria-selected="false">6MO</button>
+      <button class="nav-link" id="pills-1mo-tab" data-bs-toggle="pill" data-bs-target="#pills-1mo" type="button" role="tab" aria-controls="pills-1mo" aria-selected="false">1MO</button>
+      <button class="nav-link" id="pills-5d-tab" data-bs-toggle="pill" data-bs-target="#pills-5d" type="button" role="tab" aria-controls="pills-5d" aria-selected="false">5D</button>
+    </div>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-max" role="tabpanel" aria-labelledby="pills-max-tab">
+        <div style="margin: 0 auto;width:1000;height:100">
+            {{ plots.0|safe }}
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-ytd" role="tabpanel" aria-labelledby="pills-ytd-tab">
+        <div style="margin: 0 auto;width:1000;height:100">
+            {{ plots.1|safe }}
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-5y" role="tabpanel" aria-labelledby="pills-5y-tab">
+        <div style="margin: 0 auto;width:1000;height:100">
+            {{ plots.2|safe }}
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-1y" role="tabpanel" aria-labelledby="pills-1y-tab">
+        <div style="margin: 0 auto;width:1000;height:100">
+            {{ plots.3|safe }}
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-6mo" role="tabpanel" aria-labelledby="pills-6mo-tab">
+        <div style="margin: 0 auto;width:1000;height:100">
+            {{ plots.4|safe }}
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-1mo" role="tabpanel" aria-labelledby="pills-1mo-tab">
+        <div style="margin: 0 auto;width:1000;height:100">
+            {{ plots.5|safe }}
+        </div>
+      </div>
+      <div class="tab-pane fade" id="pills-5d" role="tabpanel" aria-labelledby="pills-5d-tab">
+        <div style="margin: 0 auto;width:1000;height:100">
+            {{ plots.6|safe }}
+        </div>
+      </div>
+    </div>
+  </div>
+<table class="table-fill">
+    <tbody class="table-hover">
+    {% for category, content in data.items %}
+    <tr>
+        <td class="text-left">{{category}}</td>
+        <td class="text-left">{{content}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+<div class="links">
+      <a href="{% url "home" %}">Back Home</a>
+</div>
+{% else %}
+<h1>Ticker {{ticker}} is not recognized</h1>
+{% endif %}
+{% endblock body %}

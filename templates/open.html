@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Page</title>
+    {% comment %} <style>
+        li:nth-of-type(odd){
+            color: blue;
+        }
+        li:nth-of-type(even){
+            color: red;
+        }
+    </style> {% endcomment %}
+</head>
+<body>
+<h1 style="font-size: 40px">Welcome!</h1>
+{%if username%}
+<div id="main-content" style="font-size: 28px">
+<p>You are logged in as: {{username}}
+<br>
+You have ${{money}} in your account
+<br>
+Your current holdings are worth ${{portfolio_value}}
+<br>
+Your net worth is ${{ portfolio_value|add:money }}
+</p>
+{% if stocks %}
+<p>Equities you currently own:</p>
+<ul style="list-style: none; padding-left: 0">
+{% for symbol, stock, current_price in stocks %}
+{% if stock.bought_at >= current_price %}
+<li style="color:red">You own {{stock.amount}} shares of <a href="{% url 'ticker' symbol %}">{{symbol}}</a>. You bought this stock at ${{stock.bought_at}}. It is currently worth ${{current_price}}</li>
+{% else %}
+<li style="color:lime">You own {{stock.amount}} shares of <a href="{% url 'ticker' symbol %}">{{symbol}}</a>. You bought this stock at ${{stock.bought_at}}. It is currently worth ${{current_price}}</li>
+{% endif %}
+<form method= "POST" action="{% url "home" %}">
+    {% csrf_token %}
+    <input type="hidden" name="symbol" value="{{symbol}}">
+    <input type="hidden" name="id" value="{{stock.id}}">
+    <input type="hidden" name="price" value="{{stock.bought_at}}">
+    <input type="number" name="amount" min="1" max="{{stock.amount}}" value="1">
+    <button type="submit">Sell</button>
+</form>
+{% endfor %}
+</ul>
+{% endif %}
+</div>
+<div class="links">
+<a href="{% url "form" %}">Buy more!</a>
+<br>
+<a href="{% url "logout" %}">Logout</a>
+</div>
+{% endif %}
+</body>
+</html>
